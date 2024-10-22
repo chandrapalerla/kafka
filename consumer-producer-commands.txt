@@ -1,0 +1,28 @@
+#Create the Docker network named kafka-network.
+
+docker network create kafka-network
+
+#Open a terminal, navigate to the directory containing your docker-compose.yml file, and run:
+docker-compose up -d
+
+#Create a topic
+docker exec -it kafka1 kafka-topics --create --topic my-topic --bootstrap-server kafka1:9092 --partitions 3 --replication-factor 2
+
+#Describe the topic
+docker exec -it kafka1 kafka-topics --describe --topic my-topic --bootstrap-server kafka1:9092
+
+#docker-compose logs -f kafka1 kafka2 kafka3
+# procuder commands
+
+docker exec -it kafka1 bash
+cd /usr/bin
+kafka-console-producer --broker-list kafka1:9092 --topic my-topic
+
+{"vehicleId": "vehicle1", "latitude": 12.34, "longitude": 56.78}
+{"vehicleId": "vehicle2", "latitude": 23.45, "longitude": 67.89}
+
+#Consumer Commands
+
+docker exec -it kafka1 bash
+cd /usr/bin
+kafka-console-consumer --bootstrap-server kafka1:9092 --topic my-topic --from-beginning
